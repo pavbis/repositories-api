@@ -59,6 +59,7 @@ func (s *Server) Run(addr string) {
 		Addr:         addr,
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,
+		IdleTimeout:  120 * time.Second,
 	}
 
 	s.logger.Fatal(srv.ListenAndServe())
