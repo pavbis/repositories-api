@@ -1,0 +1,54 @@
+version: '3'
+
+services:
+  app:
+    restart: always
+    hostname: app
+    container_name: wsh_examples_app
+    networks:
+      - ws-examples
+    build:
+      context: .
+    ports:
+      - 7000:7000
+    depends_on:
+      - postgres
+    environment:
+      DATABASE_URL: "user=root password=root dbname=testdb host=postgres port=5432 sslmode=disable"
+      AUTH_USER: test
+      AUTH_PASS: test
+
+
+  postgres:
+    image: postgres:12
+    container_name: wsh_examples_postgres
+    restart: always
+    ports:
+      - 5432:5432
+    networks:
+      - ws-examples
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: testdb
+
+  migrate:
+    image: migrate/migrate
+    networks:
+      - ws-examples
+    volumes:
+      - .:/db/migrations
+    working_dir: /db/migrations
+    links:
+      - postgres
+
+  linter:
+    image: golangci/golangci-lint
+    networks:
+      - ws-examples
+    volumes:
+      - .:/code
+    working_dir: /code
+
+networks:
+  ws-examples:
