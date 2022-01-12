@@ -3,7 +3,7 @@ package storage
 import (
 	"errors"
 
-	"github.com/pavbis/zal-case-study/application/types"
+	"github.com/pavbis/repositories-api/application/types"
 )
 
 // ErrRepoNotFound represents error in case the repository is not found

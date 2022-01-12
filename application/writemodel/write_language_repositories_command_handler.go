@@ -1,9 +1,9 @@
 package writemodel
 
 import (
-	"github.com/pavbis/zal-case-study/application/client"
-	"github.com/pavbis/zal-case-study/application/storage"
-	"github.com/pavbis/zal-case-study/application/types"
+	"github.com/pavbis/repositories-api/application/client"
+	"github.com/pavbis/repositories-api/application/storage"
+	"github.com/pavbis/repositories-api/application/types"
 )
 
 // WriteOperationsHandler handles data between external and internal storage

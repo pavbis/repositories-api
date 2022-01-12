@@ -3,7 +3,7 @@ package storage
 import (
 	"database/sql"
 
-	"github.com/pavbis/zal-case-study/application/types"
+	"github.com/pavbis/repositories-api/application/types"
 )
 
 // Executor is the interface for sql operations

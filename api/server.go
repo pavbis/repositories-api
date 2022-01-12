@@ -13,8 +13,8 @@ import (
 
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
-	apiHandlers "github.com/pavbis/zal-case-study/api/handlers"
-	"github.com/pavbis/zal-case-study/application/storage"
+	apiHandlers "github.com/pavbis/repositories-api/api/handlers"
+	"github.com/pavbis/repositories-api/application/storage"
 )
 
 const apiPathPrefix = "/api"

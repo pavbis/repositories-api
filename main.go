@@ -1,6 +1,6 @@
 package main
 
-import "github.com/pavbis/zal-case-study/api"
+import "github.com/pavbis/repositories-api/api"
 
 func main() {
 	s := api.Server{}
