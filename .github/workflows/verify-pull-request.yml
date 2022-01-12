@@ -1,0 +1,61 @@
+name: Verify Pull Request
+
+on:
+  pull_request:
+    branches: []
+
+jobs:
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:12
+        env:
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s
+    
+    steps:
+
+    - name: Set up Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: 1.16.5
+      id: go
+
+    - name: Check out code into the Go module directory
+      uses: actions/checkout@v2
+
+    - name: Get dependencies
+      run: |
+        go get -v -t -d ./...
+
+    - name: Build
+      run: go build -v .
+    
+    - name: Format code
+      run: gofmt -d ./
+
+    - name: Install golang-migrate
+      run: |
+        curl -L https://github.com/golang-migrate/migrate/releases/download/v4.12.2/migrate.linux-amd64.tar.gz | tar xvz
+        sudo mv migrate.linux-amd64 /usr/bin/migrate
+        which migrate
+
+    - name: Run migrations
+      run: migrate -source file://db/migrations -database postgresql://${{ secrets.POSTGRES_USER }}:${{ secrets.POSTGRES_PASSWORD }}@localhost:5432/${{ secrets.POSTGRES_DB }}?sslmode=disable -verbose up
+      
+    - name: Test
+      run: go test -v -race -coverpkg=./... -coverprofile=coverage.txt ./...
+      env:
+        DATABASE_URL: user=${{ secrets.POSTGRES_USER }} password=${{ secrets.POSTGRES_PASSWORD }} dbname=${{ secrets.POSTGRES_DB }} host=localhost port=5432 sslmode=disable
+        AUTH_USER: ${{ secrets.AUTH_USER }}
+        AUTH_PASS: ${{ secrets.AUTH_PASS }}
+      
+    - name: Code coverage
+      run: go tool cover -func coverage.txt
