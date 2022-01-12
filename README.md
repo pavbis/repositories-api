@@ -1,3 +1,5 @@
+[![Actions Status](https://github.com/pavbis/repositories-api/actions/workflows/verify-pull-request.yml/badge.svg)](https://github.com/pavbis/repositories-api/actions)
+
 ## Requirements
 
 * Go >= 1.14
