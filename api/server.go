@@ -8,13 +8,13 @@ import (
 	"os"
 	"time"
 
-	apiHandlers "github.com/pavbis/zal-case-study/api/handlers"
-	"github.com/pavbis/zal-case-study/application/storage"
+	// nolint: goimports
+	_ "github.com/lib/pq"
 
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
-	// Register postgres driver
-	_ "github.com/lib/pq"
+	apiHandlers "github.com/pavbis/zal-case-study/api/handlers"
+	"github.com/pavbis/zal-case-study/application/storage"
 )
 
 const apiPathPrefix = "/api"

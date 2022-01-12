@@ -4,8 +4,8 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/pavbis/zal-case-study/application/types"
 	"github.com/google/uuid"
+	"github.com/pavbis/zal-case-study/application/types"
 )
 
 const languageID = "34ffdec9-26e4-4c2f-b9ae-4dc9cb647dc5"
