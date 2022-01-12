@@ -5,7 +5,7 @@ on:
     branches: []
 
 env:
-  POSTGRES_VERSION: 14
+  POSTGRES_VERSION: postgres:14
   GO_VERSION: 1.17.5
 
 jobs:
@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     services:
       postgres:
-        image: postgres:${{ env.POSTGRES_VERSION }}
+        image: ${{ env.POSTGRES_VERSION }}
         env:
           POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
