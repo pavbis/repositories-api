@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/pavbis/zal-case-study/application/types"
+	"github.com/pavbis/repositories-api/application/types"
 )
 
 type HTTPClient interface {

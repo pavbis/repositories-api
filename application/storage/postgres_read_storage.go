@@ -1,6 +1,6 @@
 package storage
 
-import "github.com/pavbis/zal-case-study/application/types"
+import "github.com/pavbis/repositories-api/application/types"
 
 type postgresReadStorage struct {
 	sqlExecutor Executor

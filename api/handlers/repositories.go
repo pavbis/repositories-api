@@ -5,11 +5,11 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/pavbis/zal-case-study/api/input"
-	"github.com/pavbis/zal-case-study/application/client"
-	"github.com/pavbis/zal-case-study/application/storage"
-	"github.com/pavbis/zal-case-study/application/types"
-	"github.com/pavbis/zal-case-study/application/writemodel"
+	"github.com/pavbis/repositories-api/api/input"
+	"github.com/pavbis/repositories-api/application/client"
+	"github.com/pavbis/repositories-api/application/storage"
+	"github.com/pavbis/repositories-api/application/types"
+	"github.com/pavbis/repositories-api/application/writemodel"
 
 	"github.com/go-playground/validator/v10"
 )

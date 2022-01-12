@@ -1,4 +1,4 @@
-module github.com/pavbis/zal-case-study
+module github.com/pavbis/repositories-api
 
 go 1.14
 

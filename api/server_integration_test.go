@@ -13,9 +13,9 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/pavbis/zal-case-study/application/storage"
-	"github.com/pavbis/zal-case-study/application/types"
-	"github.com/pavbis/zal-case-study/application/writemodel"
+	"github.com/pavbis/repositories-api/application/storage"
+	"github.com/pavbis/repositories-api/application/types"
+	"github.com/pavbis/repositories-api/application/writemodel"
 )
 
 var s Server
