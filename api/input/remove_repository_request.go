@@ -2,10 +2,10 @@ package input
 
 import (
 	"errors"
+	"github.com/go-chi/chi/v5"
 	"net/http"
 
 	"github.com/google/uuid"
-	"github.com/gorilla/mux"
 )
 
 var ErrRepoID = errors.New("missing or invalid repository id provided")
@@ -15,10 +15,10 @@ type RemoveRepositoryRequest struct {
 }
 
 func NewRemoveRepositoryRequest(r *http.Request) (*RemoveRepositoryRequest, error) {
-	vars := mux.Vars(r)
+	repositoryID := chi.URLParam(r, "repositoryId")
 
 	// parse the provided repository id and ensure it's a valid uuid
-	repoID, err := uuid.Parse(vars["repositoryId"])
+	repoID, err := uuid.Parse(repositoryID)
 
 	if err != nil {
 		return nil, ErrRepoID

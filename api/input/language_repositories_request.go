@@ -1,9 +1,8 @@
 package input
 
 import (
+	"github.com/go-chi/chi/v5"
 	"net/http"
-
-	"github.com/gorilla/mux"
 )
 
 type LanguageRepositoriesRequest struct {
@@ -12,7 +11,7 @@ type LanguageRepositoriesRequest struct {
 
 // NewLanguageRepositoriesRequest creates valid receive event input
 func NewLanguageRepositoriesRequest(r *http.Request) *LanguageRepositoriesRequest {
-	vars := mux.Vars(r)
+	language := chi.URLParam(r, "languageName")
 
-	return &LanguageRepositoriesRequest{LanguageName: vars["languageName"]}
+	return &LanguageRepositoriesRequest{LanguageName: language}
 }

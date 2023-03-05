@@ -2,7 +2,7 @@ package api
 
 import (
 	"database/sql"
-	"io"
+	"github.com/go-chi/chi/v5"
 	"log"
 	"net/http"
 	"os"
@@ -11,13 +11,9 @@ import (
 	// nolint: goimports
 	_ "github.com/lib/pq"
 
-	"github.com/gorilla/handlers"
-	"github.com/gorilla/mux"
 	apiHandlers "github.com/pavbis/repositories-api/api/handlers"
 	"github.com/pavbis/repositories-api/application/storage"
 )
-
-const apiPathPrefix = "/api"
 
 var (
 	userName = os.Getenv("AUTH_USER")
@@ -26,14 +22,14 @@ var (
 
 // Server represents server
 type Server struct {
-	router *mux.Router
+	router *chi.Mux
 	logger *log.Logger
 	db     *sql.DB
 }
 
 // Initialize initializes the server with necessary deps
 func (s *Server) Initialize() {
-	s.router = mux.NewRouter().PathPrefix(apiPathPrefix).Subrouter()
+	s.router = chi.NewRouter()
 	s.logger = log.New(os.Stdout, "", log.LstdFlags)
 
 	var err error
@@ -52,10 +48,8 @@ func (s *Server) Initialize() {
 
 // Run starts the server on the provided port
 func (s *Server) Run(addr string) {
-	loggedRouter := s.createLoggingRouter(s.logger.Writer())
-
 	srv := &http.Server{
-		Handler:           loggedRouter,
+		Handler:           s.router,
 		Addr:              addr,
 		WriteTimeout:      15 * time.Second,
 		ReadTimeout:       15 * time.Second,
@@ -66,33 +60,23 @@ func (s *Server) Run(addr string) {
 	s.logger.Fatal(srv.ListenAndServe())
 }
 
-// Post wraps the router for POST method
-func (s *Server) Post(path string, f func(w http.ResponseWriter, r *http.Request)) {
-	s.router.HandleFunc(path, f).Methods(http.MethodPost)
-}
-
-// Get wraps the router for Get method
-func (s *Server) Get(path string, f func(w http.ResponseWriter, r *http.Request)) {
-	s.router.HandleFunc(path, apiHandlers.BasicAuthMiddleware(userName, password, f)).Methods(http.MethodGet)
-}
-
-func (s *Server) createLoggingRouter(out io.Writer) http.Handler {
-	return handlers.LoggingHandler(out, s.router)
-}
-
 func (s *Server) initializeRoutes() {
 	// Health check
-	s.router.HandleFunc("/health", apiHandlers.HealthRequestHandler).Methods(http.MethodGet)
+	s.router.Get("/api/health", apiHandlers.HealthRequestHandler)
 
 	// Language
-	s.Post("/languages/{languageName}", s.handleRequestWithDBInstance(apiHandlers.ReceiveRepositoriesRequestHandler))
-	s.Get("/languages/{languageName}", s.handleRequestWithDBInstance(apiHandlers.ReadRepositoriesRequestHandler))
-	s.Get("/languages", s.handleRequestWithDBInstance(apiHandlers.ListLanguagesAndRepositoriesRequestHandler))
-	s.Get("/stats/count-repositories", s.handleRequestWithDBInstance(apiHandlers.CountRepositoriesStarsForLanguagesRequestHandler))
+	s.router.Post("/api/languages/{languageName}", s.handleRequestWithDBInstance(apiHandlers.ReceiveRepositoriesRequestHandler))
+	s.GetWithBasicAuth("/api/languages/{languageName}", s.handleRequestWithDBInstance(apiHandlers.ReadRepositoriesRequestHandler))
+	s.GetWithBasicAuth("/api/languages", s.handleRequestWithDBInstance(apiHandlers.ListLanguagesAndRepositoriesRequestHandler))
+	s.GetWithBasicAuth("/api/stats/count-repositories", s.handleRequestWithDBInstance(apiHandlers.CountRepositoriesStarsForLanguagesRequestHandler))
 
 	// Repositories
-	s.Post("/repositories/{repositoryId}", s.handleRequestWithDBInstance(apiHandlers.RemoveRepositoryRequestHandler))
-	s.Get("/stats/top-list", s.handleRequestWithDBInstance(apiHandlers.TopRepositoryForLanguageRequestHandler))
+	s.router.Post("/api/repositories/{repositoryId}", s.handleRequestWithDBInstance(apiHandlers.RemoveRepositoryRequestHandler))
+	s.GetWithBasicAuth("/api/stats/top-list", s.handleRequestWithDBInstance(apiHandlers.TopRepositoryForLanguageRequestHandler))
+}
+
+func (s *Server) GetWithBasicAuth(path string, handler http.HandlerFunc) {
+	s.router.Get(path, apiHandlers.BasicAuthMiddleware(userName, password, handler))
 }
 
 // RequestHandlerFunction is the function which represents any handler
