@@ -62,17 +62,17 @@ func (s *Server) Run(addr string) {
 
 func (s *Server) initializeRoutes() {
 	// Health check
-	s.router.Get("/health", apiHandlers.HealthRequestHandler)
+	s.router.Get("/api/health", apiHandlers.HealthRequestHandler)
 
 	// Language
-	s.router.Post("/languages/{languageName}", s.handleRequestWithDBInstance(apiHandlers.ReceiveRepositoriesRequestHandler))
-	s.GetWithBasicAuth("/languages/{languageName}", s.handleRequestWithDBInstance(apiHandlers.ReadRepositoriesRequestHandler))
-	s.GetWithBasicAuth("/languages", s.handleRequestWithDBInstance(apiHandlers.ListLanguagesAndRepositoriesRequestHandler))
-	s.GetWithBasicAuth("/stats/count-repositories", s.handleRequestWithDBInstance(apiHandlers.CountRepositoriesStarsForLanguagesRequestHandler))
+	s.router.Post("/api/languages/{languageName}", s.handleRequestWithDBInstance(apiHandlers.ReceiveRepositoriesRequestHandler))
+	s.GetWithBasicAuth("/api/languages/{languageName}", s.handleRequestWithDBInstance(apiHandlers.ReadRepositoriesRequestHandler))
+	s.GetWithBasicAuth("/api/languages", s.handleRequestWithDBInstance(apiHandlers.ListLanguagesAndRepositoriesRequestHandler))
+	s.GetWithBasicAuth("/api/stats/count-repositories", s.handleRequestWithDBInstance(apiHandlers.CountRepositoriesStarsForLanguagesRequestHandler))
 
 	// Repositories
-	s.router.Post("/repositories/{repositoryId}", s.handleRequestWithDBInstance(apiHandlers.RemoveRepositoryRequestHandler))
-	s.GetWithBasicAuth("/stats/top-list", s.handleRequestWithDBInstance(apiHandlers.TopRepositoryForLanguageRequestHandler))
+	s.router.Post("/api/repositories/{repositoryId}", s.handleRequestWithDBInstance(apiHandlers.RemoveRepositoryRequestHandler))
+	s.GetWithBasicAuth("/api/stats/top-list", s.handleRequestWithDBInstance(apiHandlers.TopRepositoryForLanguageRequestHandler))
 }
 
 func (s *Server) GetWithBasicAuth(path string, handler http.HandlerFunc) {
