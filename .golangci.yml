@@ -1,17 +1,13 @@
 linters:
   enable:
-    - maligned
     - deadcode
     - errcheck
     - gosec
     - goconst
     - gocyclo
     - gofmt
-    - golint
     - ineffassign
-    - interfacer
     - staticcheck
-    - structcheck
+    - unused
     - unconvert
-    - varcheck
     - govet
