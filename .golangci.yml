@@ -1,6 +1,5 @@
 linters:
   enable:
-    - deadcode
     - errcheck
     - gosec
     - goconst
