@@ -14,5 +14,4 @@ linters:
     - structcheck
     - unconvert
     - varcheck
-    - vet
-    - vetshadow
+    - govet
