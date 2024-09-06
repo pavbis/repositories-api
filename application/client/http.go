@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"time"
 
@@ -44,7 +44,7 @@ func (c *realHTTPClient) FetchData(language string) (*types.GitHubJSONResponse, 
 		return nil, errors.New("fetchData: external service status code is not 200")
 	}
 
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	_ = resp.Body.Close()
 
 	if err != nil {
