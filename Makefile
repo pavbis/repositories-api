@@ -34,7 +34,7 @@ init:start_containers run_database_migrations
 
 ## Run golang ci lint with all linters.
 go_lint_all:
-	docker-compose run --rm linter golangci-lint run -v
+	docker compose run --rm linter golangci-lint run -v
 .PHONY: go_lint_all
 
 ## Build app and start containers
