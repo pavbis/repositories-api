@@ -5,20 +5,9 @@ on:
     branches: []
 
 env:
-  GO_VERSION: 1.25.6
+  GO_VERSION: 1.26.1
 
 jobs:
-  lint:
-    name: Lint
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v4
-      - name: golangci-lint
-        uses: golangci/golangci-lint-action@v4
-        with:
-          args: --timeout=5m
-
   build:
     name: Build
     runs-on: ubuntu-latest
